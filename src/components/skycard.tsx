@@ -3,7 +3,7 @@ import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function SkyCard(props:any) {
-    let {type="normal", title="", score=0, tag="morning", img="", img_prof="", profile_id=1, profile_name="User", color_code="#ffffff", select=false, blur=false, blurSelected=false, id=1, onImgChange=()=>{}, onTitleChange=()=>{}, onTagChange=()=>{}, onHover=()=>{}, onSelect=()=>{}, className} = props
+    let {type="normal", title="", score=0, tag="morning", img="", img_prof="", profile_id=1, profile_name="User", color_code="#ffffff", pantone = "Pantone", select=false, blur=false, blurSelected=false, id=1, onImgChange=()=>{}, onTitleChange=()=>{}, onTagChange=()=>{}, onHover=()=>{}, onSelect=()=>{}, className} = props
     
     title = title == 'null' ? "" : title
 
@@ -25,6 +25,23 @@ export default function SkyCard(props:any) {
     function setTag(tag:string){
         onTagChange(tag)
         seteTag(tag)
+    }
+
+    function getTagDetail(tag:string){
+        const res = {
+            className: tag=='sunset' ? 'bg-yellow-300 border-yellow-600 text-slate-800 hover:border-yellow-400 hover:bg-yellow-100' :
+            tag=='noon' ? 'bg-cyan-200 border-cyan-600 text-slate-800 hover:border-cyan-400 hover:bg-cyan-100' :
+            tag=='evening' ? 'bg-orange-300 border-orange-600 text-slate-800 hover:border-orange-400 hover:bg-orange-100' :
+            tag=='night' ? 'bg-purple-800 border-purple-950 text-slate-200 hover:border-purple-700 hover:bg-purple-600' :
+            'bg-blue-300 border-blue-600 text-slate-800 hover:border-blue-400 hover:bg-blue-100',
+            name: tag=='sunset' ? 'เช้า' :
+            tag=='noon' ? 'กลางวัน' :
+            tag=='evening' ? 'เย็น' :
+            tag=='night' ? 'กลางคืน' :
+            'เพิ่มแท็ก'
+        }
+
+        return res;
     }
 
     return <div>
@@ -51,7 +68,7 @@ export default function SkyCard(props:any) {
                                 <p className="group-hover:font-normal">โดย {profile_name}</p>
                             </Link>
                             <span className="flex gap-2 items-center group">
-                                <p className="text-sm px-2 rounded-lg bg-orange-200 border border-black/20 transition-all duration-150">เช้า</p>
+                                <p className={`text-sm px-2 rounded-lg border transition-all duration-150 ${getTagDetail(tag).className}`}>{getTagDetail(tag).name}</p>
                             </span>
                         </div>
                     </div>
@@ -59,7 +76,7 @@ export default function SkyCard(props:any) {
                         <button className="pantone-sky block w-full aspect-square rounded-md bg-slate-200 group" style={{backgroundColor: color_code}}>
                             <i className="bg-white p-2 rounded-full bx bx-copy text-xl opacity-0 group-hover:opacity-50 transition-all duration-100"></i>
                         </button>
-                        <p className="mt-1 relative w-full line-clamp-2 text-center font-light text-sm whitespace-normal">Pantone</p>
+                        <p className="mt-1 relative w-full line-clamp-2 text-center font-light text-sm whitespace-normal">{pantone}</p>
                     </div>
                 </form>
             </div>
@@ -87,7 +104,7 @@ export default function SkyCard(props:any) {
                                     <p className="text-sm 2xl:text-md">โดย {profile_name}</p>
                                 </div>
                                 <span className="flex gap-2 items-center group">
-                                    <p className="text-xs 2xl:text-sm px-2 rounded-lg bg-orange-200 border border-black/20 transition-all duration-150">{tag}</p>
+                                    <p className={`text-xs 2xl:text-sm px-2 rounded-lg border transition-all duration-150 ${getTagDetail(tag).className}`}>{getTagDetail(tag).name}</p>
                                 </span>
                             </div>
                         </div>
@@ -95,7 +112,7 @@ export default function SkyCard(props:any) {
                             <button className="pantone-sky block w-full aspect-square rounded-md bg-slate-200 group" style={{backgroundColor: color_code}}>
                                 <i className="bg-white p-2 rounded-full bx bx-copy text-xl opacity-0 group-hover:opacity-50 transition-all duration-100"></i>
                             </button>
-                            <p className="mt-1 relative w-full line-clamp-2 text-center font-light text-xs 2xl:text-sm whitespace-normal">Pantone</p>
+                            <p className="mt-1 relative w-full line-clamp-2 text-center font-light text-xs 2xl:text-sm whitespace-normal">{pantone}</p>
                         </div>
                     </form>
                 </div>
@@ -231,9 +248,9 @@ export default function SkyCard(props:any) {
                         </div>
                     </div>
                     <div className="sky-palatte relative w-16 pointer-events-none">
-                        <div className="pantone-sky block w-full aspect-square rounded-md bg-slate-200 group">
+                        <div className="pantone-sky block w-full aspect-square rounded-md bg-slate-200 group" style={{backgroundColor: color_code}}>
                         </div>
-                        <p className="mt-1 relative w-full line-clamp-2 text-center font-light text-sm whitespace-normal text-black/40">Pantone</p>
+                        <p className="mt-1 relative w-full line-clamp-2 text-center font-light text-sm whitespace-normal text-black/40">{pantone}</p>
                     </div>
                 </form>
             </div>

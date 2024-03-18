@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import SkyCard from "../components/skycard";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 export default function Home() {
   const [session, setSession] = useState<any>()
@@ -44,9 +45,13 @@ export default function Home() {
     }})
     .then(
     (res)=>{
-      console.log(res.data)
-      s[0] = res.data.result.win.new_score
-      s[1] = res.data.result.lose.new_score
+      if(res.data.result.win.skid == sky_data.sky[0].skid){
+        s[0] = res.data.result.win.new_score
+        s[1] = res.data.result.lose.new_score
+      } else {
+        s[1] = res.data.result.win.new_score
+        s[0] = res.data.result.lose.new_score
+      }
       setAnimVoteRes(s)
     }
     ).catch((err)=>{
@@ -90,7 +95,7 @@ export default function Home() {
     return <div className={`absolute text-center transition-all duration-300 pointer-events-none ${anim_vote.status == 0 || anim_vote.status == 3 ? "opacity-0" : ""}`}>
             <h4 className={`transition-all duration-300 font-medium text-xl ${anim_vote.status>=2 ? "" : "translate-y-3"}`}>คะแนนท้องฟ้า</h4>
             <h3 className={`transition-all duration-300 mt-3 text-[2em] font-bold ${anim_vote.status>=2 ? "" : "translate-y-3"}`}>{anim_vote.status >= 2 ? new_score : old_score}</h3>
-            <h3 className={`transition-all duration-300 ${anim_vote.status==2 ? "" : "translate-y-3 opacity-0"}`}><i className={`bx ${new_score - old_score > 0 ? "bxs-upvote" : "bxs-downvote"}`}></i> {new_score - old_score}</h3>
+            <h3 className={`transition-all duration-300 ${anim_vote.status==2 ? "" : "translate-y-3 opacity-0"}`}><i className={`bx ${new_score - old_score > 0 ? "bxs-upvote text-green-700" : "bxs-downvote text-red-700"}`}></i> {new_score - old_score}</h3>
           </div>
   }
 
@@ -172,7 +177,7 @@ export default function Home() {
 
                 <Link to={session?.username==undefined?"/auth/login":"/upload"}><button className={`mt-4 bg-blue-300 border-blue-600 text-slate-800 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl hover:border-2 hover:border-blue-400 hover:bg-blue-100 transition-all duration-75`}>อัพโหลดท้องฟ้า</button></Link>
 
-                <p className="mt-8">หรือรออีก {secondsRemaining} วินาที เพื่อโหวตไหม่ </p>
+                <p className="mt-8">หรือรออีก {moment.utc(secondsRemaining*1000).format("mm:ss")} วินาที เพื่อโหวตไหม่ </p>
               </div>:
               <div className={`flex items-center justify-center gap-40 ${anim_vote.status!=0 ? "pointer-events-none" : ""}`}>
                   <div className="relative flex justify-center items-center">
@@ -183,6 +188,7 @@ export default function Home() {
                       onSelect={(e:number)=>{handleSelected(e)}}
                       score={sky_data.sky[0].current_upvoted} 
                       color_code={sky_data.sky[0].color_code}
+                      pantone={sky_data.sky[0].pantone}
                       id={sky_data.sky[0].skid}
                       tag={sky_data.sky[0].tag}
                       title={sky_data.sky[0].title}
@@ -201,6 +207,7 @@ export default function Home() {
                       onSelect={(e:number)=>{handleSelected(e)}}
                       score={sky_data.sky[1].current_upvoted} 
                       color_code={sky_data.sky[1].color_code}
+                      pantone={sky_data.sky[0].pantone}
                       id={sky_data.sky[1].skid}
                       title={sky_data.sky[1].title}
                       img={`${process.env.REACT_APP_API_ENDPOINT}/sky/${sky_data.sky[1].skid}/img`}

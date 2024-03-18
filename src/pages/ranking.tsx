@@ -1,10 +1,6 @@
-"use client"
-import Image from "next/image";
-import Link from "next/link";
-import SkyCard from '@/components/skycard'
-import SkyCardBadge from '@/components/skycardbadge'
+import SkyCardBadge from '../components/skycardbadge'
 
-export default function RankPage() {
+export default function RankingPage() {
   return (
     <>
         <main className="relative h-full grid grid-rows-[auto_1fr] pb-24">

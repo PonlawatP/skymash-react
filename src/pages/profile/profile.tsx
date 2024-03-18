@@ -1,8 +1,24 @@
 import { useEffect, useState } from 'react'
 import SkyCardBadge from '../../components/skycardbadge'
 import SkyCard from '../../components/skycard'
+import { useNavigate, useParams } from 'react-router-dom'
 
-export default function Home() {
+export default function ProfilePage() {
+  const {profile_id} = useParams()
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    console.log(profile_id)
+    if(profile_id == undefined){
+      const js = JSON.parse(localStorage.getItem('session') || 'false')
+      if(js && js.uid > 0){
+        navigate("/profile/"+js.username)
+      } else {
+        navigate("/auth/login")
+      }
+    }
+  },[])
+  
   function passIcon(pass=false){
     return <i className={"bx bx-check text-4xl "+(!pass?"text-black/10":"text-green-600")}></i>
   }

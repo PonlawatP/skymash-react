@@ -1,9 +1,9 @@
-import Link from "next/link"
+import { Link } from "react-router-dom"
 
-export default function ProfileItem(props) {
+export default function ProfileItem(props:any) {
     const {profile_id=1, img="https://cdn-icons-png.freepik.com/512/3135/3135715.png", username="User", sky_total=0, voted_receive=0, voted_send=0} = props
     return <div className="mt-4 rounded-xl drop-shadow-md flex flex-col sm:flex-row gap-10 justify-between items-center w-[66em] p-4 px-6 bg-white">
-                <Link href={`/profile/${profile_id}`} className="flex items-center gap-10">
+                <Link to={`/profile/${profile_id}`} className="flex items-center gap-10">
                     <img src={img} alt={username} width={120} height={120} className='rounded-full aspect-square object-cover border-2 border-white/30'></img>
                     <h2 className="text-3xl text-center sm:text-start font-semibold">{username}</h2>
                 </Link>

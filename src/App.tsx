@@ -10,6 +10,9 @@ import { ToastContainer } from "react-toastify";
 
 import 'react-toastify/dist/ReactToastify.css';
 import SkyPage from "./pages/profile/sky/skypage";
+import ProfilePage from "./pages/profile/profile";
+import RankingPage from "./pages/ranking";
+import UserListPage from "./pages/admin/userlistpage";
 
 function App() {
   const routers = createBrowserRouter(
@@ -21,11 +24,11 @@ function App() {
           { path: "/", element: <Home />},
           { 
             path: "/profile",
-            element: <UploadPage />,
+            element: <ProfilePage />,
             children: [
               {
                 path: ":profile_id",
-                element: <UploadPage />
+                element: <ProfilePage />
               }
             ]
           },
@@ -34,8 +37,16 @@ function App() {
             element: <SkyPage />
           },
           { path: "/upload", element: <UploadPage />},
+          { path: "/ranking", element: <RankingPage />},
         ],
         // errorElement: <ErrorPage/>
+      },
+      {
+        path: "/admin",
+        element: <RootLayout />,
+        children: [
+          {path: "users", element: <UserListPage/>},
+        ]
       },
       {
         path: "/auth",

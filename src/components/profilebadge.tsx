@@ -41,7 +41,7 @@ export default function ProfileBadge(props:any){
         <Menu.Item>
           {() => (
             <Link
-              to='/profile/1'
+              to={'/profile/'+session.username}
               className={
                 "profile-badge-li block cursor-pointer text-sm py-2 pl-3 w-full text-pr-text-menu hover:bg-blue-300 hover:pl-4"
               }

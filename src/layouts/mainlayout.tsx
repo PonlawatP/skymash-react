@@ -25,14 +25,7 @@ export default function RootLayout() {
                 <Link to={"/ranking"}><h3 className={`text-xl transition-all duration-300 hover:font-bold`}>จัดอันดับ</h3></Link>
                 <Link to={session?.username==undefined?"/auth/login":"/upload"}><button className={`bg-blue-300 border-blue-600 text-slate-800 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl hover:border-2 hover:border-blue-400 hover:bg-blue-100 transition-all duration-75`}>อัพโหลดท้องฟ้า</button></Link>
                 {
-                  session?.username!=undefined ?
-                    <>
-                      <Link to={"/admin/users"}><h3 className={`text-xl transition-all duration-300 hover:font-bold`}>รายการผู้ใช้</h3></Link>
-                    </>
-                  : null
-                }
-                {
-                  session?.is_admin==1 && <Link to={"/admin/users"}><h3 className={`text-xl transition-all duration-300 hover:font-bold`}>รายการผู้ใช้</h3></Link>
+                  session?.is_admin && <Link to={"/admin/users"}><h3 className={`text-xl transition-all duration-300 hover:font-bold`}>รายการผู้ใช้</h3></Link>
                 }
               </div>
               <ProfileBadge logged_in={session?.username!=undefined} session={session}></ProfileBadge>
