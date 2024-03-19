@@ -12,7 +12,7 @@ export default function UploadPage() {
 
 
   const imageUpload = async () => {
-    console.log(image)
+    // console.log(image)
     if(image == undefined){
       toast.error("เพิ่มรูปภาพก่อน", 
         {

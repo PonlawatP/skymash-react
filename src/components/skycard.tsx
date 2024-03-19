@@ -1,6 +1,8 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { toast } from "react-toastify";
 
 export default function SkyCard(props:any) {
     let {type="normal", title="", score=0, tag="morning", img="", img_prof="", profile_id=1, profile_name="User", color_code="#ffffff", pantone = "Pantone", select=false, blur=false, blurSelected=false, id=1, onImgChange=()=>{}, onTitleChange=()=>{}, onTagChange=()=>{}, onHover=()=>{}, onSelect=()=>{}, className} = props
@@ -27,6 +29,10 @@ export default function SkyCard(props:any) {
         seteTag(tag)
     }
 
+    function handleClickCc(){
+        toast.success(`คัดลอกโค้ดสีแล้ว! ${color_code}`, {autoClose:1500, position:"bottom-right"})
+    }
+
     function getTagDetail(tag:string){
         const res = {
             className: tag=='sunset' ? 'bg-yellow-300 border-yellow-600 text-slate-800 hover:border-yellow-400 hover:bg-yellow-100' :
@@ -48,23 +54,25 @@ export default function SkyCard(props:any) {
     {
         type=="normal" ?
             <div className="sky-card bg-white drop-shadow-xl p-4 rounded-sm w-[26rem]">
-                <div className="vote-box absolute -bottom-0 opacity-0 text-center group-hover/main:opacity-100 group-hover/main:-bottom-24 right-1/2 translate-x-1/2 text-slate-500 transition-all duration-300 ease-out ">
-                    <i className="bx bxs-hand-up text-2xl"></i>
-                    <p>โหวตให้รูปนี้</p>
-                </div>
-                <div className="sky-img relative aspect-square rounded-sm group bg-slate-200">
-                    <img className="w-full h-full object-cover" src={img==""?"https://www.adorama.com/alc/wp-content/uploads/2017/11/shutterstock_114802408.jpg":img} alt="" />
-                    <div className="w-full h-full absolute top-0 shadow-inner shadow-black/30"></div>
-                </div>
-                <form className="sky-detail pt-4 px-2 grid grid-cols-[1fr_auto] items-start gap-4">
+                <Link to={`/sky/${id}`}>
+                    <div className="sky-img relative aspect-square rounded-sm group bg-slate-200">
+                        <img className="w-full h-full object-cover" src={img==""?"https://www.adorama.com/alc/wp-content/uploads/2017/11/shutterstock_114802408.jpg":img} alt="" />
+                        <div className="w-full h-full absolute top-0 shadow-inner shadow-black/30"></div>
+                    </div>
+                </Link>
+                <div className="sky-detail pt-4 px-2 grid grid-cols-[1fr_auto] items-start gap-4">
                     <div className="flex flex-col justify-between relative gap-4">
                         <div className="flex flex-between">
-                            <h3 className="relative font-medium text-xl px-1 line-clamp-1 w-full h-7">{title}</h3>
+                                <h3 className="relative font-medium text-xl px-1 line-clamp-1 w-full h-7">
+                                    <Link to={`/sky/${id}`}>
+                                        {title}
+                                    </Link>
+                                </h3>
                             <span className="flex items-center gap-1 text-slate-500 text-sm">{score}<i className="bx bx-heart"></i></span>
                         </div>
                         <div className="sky-lowerdetail flex justify-between items-end transition-all duration-150">
                             <Link to={`/profile/${profile_id}`} className="flex gap-4 items-center font-light group">
-                                <img src={img_prof==""?"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png":img_prof} alt="" className="w-11 aspect-square bg-white rounded-full" />
+                                <img src={`${process.env.REACT_APP_API_ENDPOINT}/profile/${profile_name}/img`} onError={(e:any)=>{e.target.src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}} alt="" className="w-11 aspect-square bg-white rounded-full object-cover" />
                                 <p className="group-hover:font-normal">โดย {profile_name}</p>
                             </Link>
                             <span className="flex gap-2 items-center group">
@@ -73,12 +81,14 @@ export default function SkyCard(props:any) {
                         </div>
                     </div>
                     <div className="sky-palatte relative w-16">
+                    <CopyToClipboard text={color_code} onCopy={handleClickCc}>
                         <button className="pantone-sky block w-full aspect-square rounded-md bg-slate-200 group" style={{backgroundColor: color_code}}>
                             <i className="bg-white p-2 rounded-full bx bx-copy text-xl opacity-0 group-hover:opacity-50 transition-all duration-100"></i>
                         </button>
+                    </CopyToClipboard>
                         <p className="mt-1 relative w-full line-clamp-2 text-center font-light text-sm whitespace-normal">{pantone}</p>
                     </div>
-                </form>
+                </div>
             </div>
         :
         type=="vote" ?
@@ -92,7 +102,7 @@ export default function SkyCard(props:any) {
                         <img className="w-full h-full object-cover" src={img==""?"https://www.adorama.com/alc/wp-content/uploads/2017/11/shutterstock_114802408.jpg":img} alt="" />
                         <div className="w-full h-full absolute top-0 shadow-inner shadow-black/30"></div>
                     </div>
-                    <form className="sky-detail pt-4 px-2 grid grid-cols-[1fr_auto] items-start gap-4">
+                    <div className="sky-detail pt-4 px-2 grid grid-cols-[1fr_auto] items-start gap-4">
                         <div className="flex flex-col justify-between relative gap-4">
                             <div className="flex flex-between">
                                 <h3 className="relative font-medium text-md 2xl:text-xl px-1 line-clamp-1 w-full h-6 2xl:h-7">{title}</h3>
@@ -100,7 +110,7 @@ export default function SkyCard(props:any) {
                             </div>
                             <div className="sky-lowerdetail flex justify-between items-end transition-all duration-150">
                                 <div className="flex gap-4 items-center font-light group">
-                                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" className="w-11 aspect-square bg-white rounded-full" />
+                                    <img src={`${process.env.REACT_APP_API_ENDPOINT}/profile/${profile_name}/img`} onError={(e:any)=>{e.target.src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}} alt="" className="w-11 aspect-square bg-white rounded-full object-cover" />
                                     <p className="text-sm 2xl:text-md">โดย {profile_name}</p>
                                 </div>
                                 <span className="flex gap-2 items-center group">
@@ -109,12 +119,11 @@ export default function SkyCard(props:any) {
                             </div>
                         </div>
                         <div className="sky-palatte relative w-16">
-                            <button className="pantone-sky block w-full aspect-square rounded-md bg-slate-200 group" style={{backgroundColor: color_code}}>
-                                <i className="bg-white p-2 rounded-full bx bx-copy text-xl opacity-0 group-hover:opacity-50 transition-all duration-100"></i>
-                            </button>
+                            <div className="pantone-sky block w-full aspect-square rounded-md bg-slate-200 group" style={{backgroundColor: color_code}}>
+                            </div>
                             <p className="mt-1 relative w-full line-clamp-2 text-center font-light text-xs 2xl:text-sm whitespace-normal">{pantone}</p>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         :
@@ -238,8 +247,8 @@ export default function SkyCard(props:any) {
                         </Menu>
                         <div className="sky-lowerdetail flex justify-between items-end transition-all duration-150 opacity-0 invisible">
                             <div className="flex gap-4 items-center font-light">
-                                <img src="" alt="" className="w-11 border-2 border-white/50 aspect-square bg-red-400 rounded-full" />
-                                <p>โดย User User</p>
+                                <img src={`${process.env.REACT_APP_API_ENDPOINT}/profile/${profile_name}/img`} onError={(e:any)=>{e.target.src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}} alt="" className="w-11 border-2 border-white/50 aspect-square bg-red-400 rounded-full object-cover" />
+                                <p className="text-sm 2xl:text-md">โดย {profile_name}</p>
                             </div>
                             <button className="flex gap-2 items-center group">
                                 <i className="bx bx-edit-alt text-slate-600 group-hover:text-slate-800"></i>

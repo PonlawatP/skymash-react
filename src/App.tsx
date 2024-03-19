@@ -10,9 +10,9 @@ import { ToastContainer } from "react-toastify";
 
 import 'react-toastify/dist/ReactToastify.css';
 import SkyPage from "./pages/profile/sky/skypage";
-import ProfilePage from "./pages/profile/profile";
 import RankingPage from "./pages/ranking";
 import UserListPage from "./pages/admin/userlistpage";
+import ProfilePage from "./pages/profile/profilepage";
 
 function App() {
   const routers = createBrowserRouter(

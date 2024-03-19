@@ -1,5 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function ProfileBadge(props:any){
@@ -24,7 +24,7 @@ export default function ProfileBadge(props:any){
         <div className="text-right font-light hidden md:block mt-2">
           <p className=''>{session.username}</p>
         </div>
-        <img src={session.profile == "" ? 'https://cdn-icons-png.freepik.com/512/3135/3135715.png' : session.profile} alt='' width={50} height={50} className='rounded-full aspect-square object-cover border-2 border-white/30'></img>
+        <img src={process.env.REACT_APP_API_ENDPOINT+"/profile/"+session.username+"/img"} onError={(e:any)=>{e.target.src="https://cdn-icons-png.freepik.com/512/3135/3135715.png"}} alt='' width={50} height={50} className='rounded-full aspect-square object-cover border-2 border-white/30'></img>
       </Menu.Button>
     </div>
     <Transition

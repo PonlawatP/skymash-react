@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -27,9 +28,19 @@ function LoginPage() {
       // setSession(res.data)
       localStorage.setItem('session',JSON.stringify(res.data))
       navigate("/")
+
+      toast.success("ยินดีต้อนรับ " + res.data.username, {
+        position: 'bottom-right',
+        autoClose: 1500
+      })
     }
     ).catch((err)=>{
       console.log(err)
+
+      toast.error("เข้าสู่ระบบไม่สำเร็จ", {
+        position: 'bottom-right',
+        autoClose: 1500
+      })
     })
   }
   
