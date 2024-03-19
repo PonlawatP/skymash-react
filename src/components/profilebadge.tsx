@@ -42,6 +42,7 @@ export default function ProfileBadge(props:any){
           {() => (
             <Link
               to={'/profile/'+session.username}
+              reloadDocument={true}
               className={
                 "profile-badge-li block cursor-pointer text-sm py-2 pl-3 w-full text-pr-text-menu hover:bg-blue-300 hover:pl-4"
               }

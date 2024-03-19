@@ -180,10 +180,11 @@ export default function ProfilePage() {
             {userSkyData?.popularSky == undefined ? <>
               <div className="relative w-full flex flex-col justify-center items-center h-[28rem]">
                 <i className="bx bx-cloud text-[4rem] animate-bounce"></i>
-                <p>ไม่มีท้องฟ้าเลย</p>
+                {session?.username != userData?.username ? <p>แย่จัง ไม่มีท้องฟ้าเลย</p> : <><p>ไม่มีท้องฟ้าเลย</p>
                 <p>ร่วมแข่งขัน ประชันท้องฟ้ากับชาวท้องฟ้ากันเลย</p>
 
-                <Link to={"/upload"}><button className={`mt-4 bg-blue-300 border-blue-600 text-slate-800 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl hover:border-2 hover:border-blue-400 hover:bg-blue-100 transition-all duration-75`}>อัพโหลดท้องฟ้า</button></Link>
+                <Link to={"/upload"}><button className={`mt-4 bg-blue-300 border-blue-600 text-slate-800 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl hover:border-2 hover:border-blue-400 hover:bg-blue-100 transition-all duration-75`}>อัพโหลดท้องฟ้า</button></Link></>}
+                
               </div>
             </> : <SkyCardBadge 
               id={userSkyData?.popularSky.skid}
