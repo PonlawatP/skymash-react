@@ -164,8 +164,7 @@ export default function Home() {
               <div className="flex justify-center mt-10">
                   <p className="text-xl font-light bg-white/60 px-4 pb-1 pt-2 rounded-lg">เลือกรูปภาพท้องฟ้าที่ถูกใจที่สุด</p>
               </div>
-              {sky_data==null?null:
-              secondsRemaining <= 0 ? <div className="relative w-full h-full flex flex-col justify-center items-center">
+              {sky_data==null || secondsRemaining <= 0 ? <div className="relative w-full h-full flex flex-col justify-center items-center">
                 <i className="bx bx-cloud text-[4rem] animate-bounce"></i>
                 <p>กำลังโหลด</p>
                 <p>อดใจรอซักแปบ</p>

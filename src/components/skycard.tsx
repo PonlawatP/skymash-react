@@ -5,11 +5,11 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast } from "react-toastify";
 
 export default function SkyCard(props:any) {
-    let {type="normal", title="", score=0, tag="morning", img="", img_prof="", profile_id=1, profile_name="User", color_code="#ffffff", pantone = "Pantone", select=false, blur=false, blurSelected=false, id=1, onImgChange=()=>{}, onTitleChange=()=>{}, onTagChange=()=>{}, onHover=()=>{}, onSelect=()=>{}, className} = props
+    let {type="normal", no_click=false, title="", score=0, tag="morning", img="", img_prof="", profile_id=1, not_img=false, profile_name="User", color_code="#ffffff", pantone = "Pantone", select=false, blur=false, blurSelected=false, id=1, onImgChange=()=>{}, onTitleChange=()=>{}, onTagChange=()=>{}, onHover=()=>{}, onSelect=()=>{}, className} = props
     
     title = title == 'null' ? "" : title
 
-    const [e_tag, seteTag] = useState<any>(null);
+    const [e_tag, seteTag] = useState<any>(img!=""?tag:null);
     const [imagePreview, setImagePreview] = useState(null);
     
     const handleImage = (event:any) => {
@@ -54,27 +54,42 @@ export default function SkyCard(props:any) {
     {
         type=="normal" ?
             <div className="sky-card bg-white drop-shadow-xl p-4 rounded-sm w-[26rem]">
-                <Link to={`/sky/${id}`}>
+                {no_click?
+                    <div className="sky-img relative aspect-square rounded-sm group bg-slate-200">
+                        <img className="w-full h-full object-cover" src={img==""?"https://www.adorama.com/alc/wp-content/uploads/2017/11/shutterstock_114802408.jpg":img} alt="" />
+                        <div className="w-full h-full absolute top-0 shadow-inner shadow-black/30"></div>
+                    </div>:<Link to={`/sky/${id}`}>
                     <div className="sky-img relative aspect-square rounded-sm group bg-slate-200">
                         <img className="w-full h-full object-cover" src={img==""?"https://www.adorama.com/alc/wp-content/uploads/2017/11/shutterstock_114802408.jpg":img} alt="" />
                         <div className="w-full h-full absolute top-0 shadow-inner shadow-black/30"></div>
                     </div>
-                </Link>
+                </Link>}
+                
                 <div className="sky-detail pt-4 px-2 grid grid-cols-[1fr_auto] items-start gap-4">
                     <div className="flex flex-col justify-between relative gap-4">
                         <div className="flex flex-between">
+                                {no_click?<h3 className="relative font-medium text-xl px-1 line-clamp-1 w-full h-7">
+                                    {title}
+                                </h3>:
                                 <h3 className="relative font-medium text-xl px-1 line-clamp-1 w-full h-7">
                                     <Link to={`/sky/${id}`}>
                                         {title}
                                     </Link>
                                 </h3>
+                                    }
                             <span className="flex items-center gap-1 text-slate-500 text-sm">{score}<i className="bx bx-heart"></i></span>
                         </div>
                         <div className="sky-lowerdetail flex justify-between items-end transition-all duration-150">
-                            <Link to={`/profile/${profile_id}`} className="flex gap-4 items-center font-light group">
-                                <img src={`${process.env.REACT_APP_API_ENDPOINT}/profile/${profile_name}/img`} onError={(e:any)=>{e.target.src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}} alt="" className="w-11 aspect-square bg-white rounded-full object-cover" />
-                                <p className="group-hover:font-normal">โดย {profile_name}</p>
-                            </Link>
+                            {no_click?
+                                <div className="flex gap-4 items-center font-light group">
+                                    <img src={`${process.env.REACT_APP_API_ENDPOINT}/profile/${profile_name}/img`} onError={(e:any)=>{e.target.src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}} alt="" className="w-11 aspect-square bg-white rounded-full object-cover" />
+                                    <p className="">โดย {profile_name}</p>
+                                </div>
+                            :
+                                <Link to={`/profile/${profile_id}`} className="flex gap-4 items-center font-light group">
+                                    <img src={`${process.env.REACT_APP_API_ENDPOINT}/profile/${profile_name}/img`} onError={(e:any)=>{e.target.src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}} alt="" className="w-11 aspect-square bg-white rounded-full object-cover" />
+                                    <p className="group-hover:font-normal">โดย {profile_name}</p>
+                                </Link>}
                             <span className="flex gap-2 items-center group">
                                 <p className={`text-sm px-2 rounded-lg border transition-all duration-150 ${getTagDetail(tag).className}`}>{getTagDetail(tag).name}</p>
                             </span>
@@ -129,18 +144,33 @@ export default function SkyCard(props:any) {
         :
         type=="edit" ?
             <div className="sky-card bg-white drop-shadow-xl p-4 rounded-sm w-[26rem]">
-                <input type="file" name="" id="img_preview" onChange={(e)=>{onImgChange(handleImage(e))}} hidden />
-                <label htmlFor='img_preview'  className="sky-img block cursor-pointer relative aspect-square w-[24rem] rounded-sm group bg-slate-200 shadow-inner overflow-hidden">
-                    {imagePreview != null ? <img src={imagePreview} alt="sky's preview" className="absolute w-full h-full object-cover" /> : null}
-                    <div className={`transition-all duration-300 relative w-full h-full p-3 group-hover:bg-black/50 group ${imagePreview != null ? "opacity-0 hover:opacity-100 backdrop-blur-sm" : ""}`}>
-                        <div className="transition-all duration-300 rounded-md flex flex-col justify-center items-center w-full h-full border-2 border-dashed border-slate-500 text-slate-500 group-hover:border-white group-hover:text-white">
-                            <i className="bx bx-image-add text-[4.5em] mb-4"></i>
-                            <p>คลิกเพื่อเพิ่มรูปภาพ</p>
-                            <p>หรือ</p>
-                            <p>ลากรูปภาพมาวางได้เลย</p>
-                        </div>
+                {not_img ?
+                <>
+                    <div className="sky-img relative aspect-square rounded-sm group bg-slate-200">
+                        <img className="w-full h-full object-cover" src={img==""?"https://www.adorama.com/alc/wp-content/uploads/2017/11/shutterstock_114802408.jpg":img} alt="" />
+                        <div className="w-full h-full absolute top-0 shadow-inner shadow-black/30"></div>
                     </div>
-                </label>
+                </>:<>
+                    <input type="file" name="" id="img_preview" onChange={(e)=>{onImgChange(handleImage(e))}} hidden />
+                    <label htmlFor='img_preview'  className="sky-img block cursor-pointer relative aspect-square w-[24rem] rounded-sm group bg-slate-200 shadow-inner overflow-hidden">
+                        {img != "" ? 
+                            <img src={img} alt="sky's preview" className="absolute w-full h-full object-cover" />
+                        :
+                        <>
+                            {imagePreview != null ? <img src={imagePreview} alt="sky's preview" className="absolute w-full h-full object-cover" /> : null}
+                            <div className={`transition-all duration-300 relative w-full h-full p-3 group-hover:bg-black/50 group ${imagePreview != null ? "opacity-0 hover:opacity-100 backdrop-blur-sm" : ""}`}>
+                                <div className="transition-all duration-300 rounded-md flex flex-col justify-center items-center w-full h-full border-2 border-dashed border-slate-500 text-slate-500 group-hover:border-white group-hover:text-white">
+                                    <i className="bx bx-image-add text-[4.5em] mb-4"></i>
+                                    <p>คลิกเพื่อเพิ่มรูปภาพ</p>
+                                    <p>หรือ</p>
+                                    <p>ลากรูปภาพมาวางได้เลย</p>
+                                </div>
+                            </div>
+                        </>
+                        }
+                    </label>
+                </>
+                }
                 <form className="sky-detail pt-4 px-2 grid grid-cols-[1fr_auto] items-start gap-4"
                     onSubmit={(e)=>{
                         e.preventDefault()
@@ -148,7 +178,7 @@ export default function SkyCard(props:any) {
                 >
                     <div className="flex flex-col justify-between relative gap-4">
                         <div className="flex flex-between gap-4">
-                            <input className="appearance-none font-medium text-xl border-b-2 rounded w-full py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pic_name" type="text" placeholder="ชื่อรูปภาพ" onChange={(e)=>{onTitleChange(e)}}/>
+                            <input className="appearance-none font-medium text-xl border-b-2 rounded w-full py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pic_name" type="text" placeholder="ชื่อรูปภาพ" defaultValue={title} onChange={(e)=>{onTitleChange(e)}}/>
                             <span className="flex items-center gap-1 text-slate-500 text-sm">{score}<i className="bx bx-heart"></i></span>
                         </div>
                         <Menu as="div" className={'absolute bottom-0 right-0'}>

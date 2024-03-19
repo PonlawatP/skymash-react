@@ -6,6 +6,7 @@ import moment, { now } from 'moment';
 import Swal from 'sweetalert2';
 import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
+import axios from 'axios';
 
 export default function SkyPage() {
   const [sky_data, setSkyData] = useState<any>(null);
@@ -38,6 +39,8 @@ export default function SkyPage() {
         return
       }
       setSkyData(d)
+      setTitle(d.title)
+      setTag(d.tag)
     })
   },[sky_id])
 
@@ -136,6 +139,45 @@ export default function SkyPage() {
     },
   };
 
+  const [popStatus, setPopStatus] = useState({init: false, edit: false, password: false})
+
+  useEffect(()=>{
+    setPopStatus({...popStatus, init: true})
+  }, [])
+
+  function handleTogglePopupEdit(){
+    setPopStatus({...popStatus, edit:!popStatus.edit})
+  }
+
+  const [title, setTitle] = useState<any>(null);
+  const [tag, setTag] = useState<any>(null);
+
+  const imageUpdate = async () => {
+
+    let data = {
+      title,
+      tag
+    }
+
+      axios.put(process.env.REACT_APP_API_ENDPOINT+"/sky/"+sky_data?.skid, data)
+      .then(
+      ()=>{
+        toast.success("👌 อัพเดตสำเร็จ", {
+          position: 'bottom-right',
+          autoClose: 1500
+        })
+        window.location.reload()
+
+      }
+      ).catch((err)=>{
+        console.log(err)
+        toast.success("เกิดข้อผิดพลาด 🤯", {
+          position: 'bottom-right',
+          autoClose: 1500
+        })
+      })
+  };
+
   return (
     <>
         <main className="relative h-full flex flex-col gap-16 2xl:flex-row w-10/12 2xl:w-5/6 3xl:w-4/6 mx-auto">
@@ -143,6 +185,7 @@ export default function SkyPage() {
             <div className="flex flex-col gap-10 justify-center items-center">
                   <SkyCard 
                     type="normal"
+                    no_click={true}
                     title={sky_data.title}
                     profile_id={sky_data.uid}
                     profile_name={sky_data.username}
@@ -191,7 +234,7 @@ export default function SkyPage() {
                       }} className={`mt-2 bg-red-600 border-red-800 text-slate-100 hover:border-2 hover:border-red-700 hover:bg-red-500 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl transition-all duration-75`}>
                         <i className="bx bx-trash"></i> ลบ
                       </button>
-                      <button onClick={()=>{}} className={`mt-2 bg-blue-300 border-blue-600 text-slate-800 hover:border-2 hover:border-blue-400 hover:bg-blue-50 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl transition-all duration-75`}>
+                      <button onClick={handleTogglePopupEdit} className={`mt-2 bg-blue-300 border-blue-600 text-slate-800 hover:border-2 hover:border-blue-400 hover:bg-blue-50 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl transition-all duration-75`}>
                         <i className="bx bx-edit"></i> แก้ไข
                       </button>
                     </> : null
@@ -213,6 +256,39 @@ export default function SkyPage() {
               </div>
             </div>
                 </>: null}
+          
+        {
+          popStatus.init && session?.username == sky_data?.username ? <>
+          <section onClick={(e:any)=>{if(e.target.id=="ed_sc"){handleTogglePopupEdit()}}} id="ed_sc" className={`transition-all duration-200 ${popStatus.edit ? "bg-black/20 backdrop-blur-sm" : "opacity-0 invisible"} w-full h-full fixed top-0 left-0 grid items-center justify-center`}>
+              <div className="flex flex-col gap-10 justify-center items-center">
+                <p className="text-xl bg-white/60 px-4 pb-1 pt-2 rounded-lg">อัพโหลดท้องฟ้า</p>
+
+                  <SkyCard type="edit"
+                    not_img={true} 
+                    title={sky_data.title}
+                    score={sky_data.current_upvoted}
+                    profile_id={sky_data.uid}
+                    profile_name={sky_data.username}
+                    color_code={sky_data.color_code}
+                    tag={sky_data.tag}
+                    pantone={sky_data.pantone}
+                    img={`${process.env.REACT_APP_API_ENDPOINT}/sky/${sky_data.skid}/img`}
+
+                    onTitleChange={(e:any)=>{
+                      setTitle(e.target.value)
+                    }}
+                    onTagChange={(e:any)=>{
+                      setTag(e)
+                    }}
+                  ></SkyCard>
+
+                  <button onClick={()=>{
+                    imageUpdate()
+                    }} className={`mt-2 bg-green-200 border-green-600 text-slate-800 hover:border-2 hover:border-green-400 hover:bg-green-50 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl transition-all duration-75`}>แก้ไขท้องฟ้า</button>
+              </div>
+          </section>
+          </> : null
+        }
         </main>
         <section className="bg-gradient-to-t from-orange-200 fixed w-full h-full top-0 left-0 -z-10" />
     </>

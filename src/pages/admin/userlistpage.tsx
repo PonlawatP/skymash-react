@@ -30,7 +30,7 @@ export default function UserListPage(){
             </div>
             <div className="mx-auto mt-10">
                 <div className="flex justify-end"><button className="flex items-center gap-2 text-black/50 hover:text-black/80"><i className="bx bx-sort-alt-2 text-3xl"></i> <p>ได้รับคะแนนโหวต</p></button></div>
-                {userListData.map((u:any, uindex:number)=><ProfileItem 
+                {userListData.map((u:any, uindex:number)=><ProfileItem
                     key={uindex}
                     profile_id={u.uid}
                     img={`${process.env.REACT_APP_API_ENDPOINT}/profile/${u.username}/img`}

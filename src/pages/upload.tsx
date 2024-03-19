@@ -47,7 +47,6 @@ export default function UploadPage() {
         }),
         {
           pending: 'กำลังอัพโหลด',
-          success: '👌 อัพโหลดสำเร็จ',
           error: 'เกิดข้อผิดพลาด 🤯'
         },
         {
@@ -57,11 +56,26 @@ export default function UploadPage() {
     );
 
       if (response.ok) {
+        toast.success("👌 อัพโหลดสำเร็จ", 
+          {
+            position: "bottom-right",
+            autoClose: 1500,
+          })
+        const rs = await response.json()
         console.log('Image uploaded successfully!');
         // Reset the form or handle success
-        const rs = await response.json()
         navigate(`/sky/${rs.result.skid}`)
       } else {
+        const rs = await response.json()
+        if(rs.err){
+          toast.error(rs.err, 
+          {
+            position: "bottom-right",
+            autoClose: 1500,
+          })
+          setUpload(false)
+          return
+        }
         console.error('Image upload failed: ', response.statusText);
       }
     } catch (error) {
