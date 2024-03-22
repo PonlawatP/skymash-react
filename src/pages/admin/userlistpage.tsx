@@ -25,11 +25,12 @@ export default function UserListPage(){
   },[])
     return <>
         <main className="relative h-full grid grid-rows-[auto_1fr] pb-24">
-            <div className="flex justify-center mt-10">
-                <p className="text-xl bg-white/60 px-4 pb-1 pt-2 rounded-lg">รายการผู้ใช้</p>
+            <div className="flex justify-center lg:mt-10">
+                <p className="lg:text-xl font-light bg-white/60 px-4 pb-1 pt-2 rounded-lg">รายการผู้ใช้</p>
             </div>
             <div className="mx-auto mt-10">
-                <div className="flex justify-end"><button className="flex items-center gap-2 text-black/50 hover:text-black/80"><i className="bx bx-sort-alt-2 text-3xl"></i> <p>ได้รับคะแนนโหวต</p></button></div>
+                <div className="flex justify-end">
+                  <button className="flex items-center gap-2 text-black/50 hover:text-black/80 text-sm"><i className="bx bx-sort-alt-2 text-lg lg:text-3xl"></i> <p>ได้รับคะแนนโหวต</p></button></div>
                 {userListData.map((u:any, uindex:number)=><ProfileItem
                     key={uindex}
                     profile_id={u.uid}

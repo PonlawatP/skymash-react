@@ -175,8 +175,9 @@ export default function ProfilePage() {
     <>
       <main className="container mx-auto">
         <div className="flex flex-col-reverse gap-20 items-center xl:items-start xl:flex-row xl:max-w-[82em] xl:mx-auto">
+
           <div className="flex flex-col items-center gap-4">
-            <p className="w-fit text-xl font-light bg-white/60 px-4 pb-1 pt-2 rounded-lg">รูปท้องฟ้าโดดเด่นของโปรไฟล์</p>
+            <p className="w-fit lg:text-xl font-light bg-white/60 px-4 pb-1 pt-2 rounded-lg">รูปท้องฟ้าโดดเด่นของโปรไฟล์</p>
             {userSkyData?.popularSky == undefined ? <>
               <div className="relative w-full flex flex-col justify-center items-center h-[28rem]">
                 <i className="bx bx-cloud text-[4rem] animate-bounce"></i>
@@ -201,28 +202,28 @@ export default function ProfilePage() {
             
           </div>
 
-          <div className="mt-20">
+          <div className="lg:mt-20">
             <div className="flex flex-col sm:flex-row gap-10 items-center">
-              <img src={userData ? process.env.REACT_APP_API_ENDPOINT+"/profile/"+userData?.username+"/img" : "https://cdn-icons-png.freepik.com/512/3135/3135715.png"} onError={(e:any)=>{e.target.src="https://cdn-icons-png.freepik.com/512/3135/3135715.png"}} alt='' width={170} height={170} className='rounded-full aspect-square object-cover border-2 border-white/30'></img>
+              <img src={userData ? process.env.REACT_APP_API_ENDPOINT+"/profile/"+userData?.username+"/img" : "https://cdn-icons-png.freepik.com/512/3135/3135715.png"} onError={(e:any)=>{e.target.src="https://cdn-icons-png.freepik.com/512/3135/3135715.png"}} alt='' width={170} height={170} className='rounded-full aspect-square w-[120px] h-[120px] lg:w-[170px] lg:h-[170px] object-cover border-2 border-white/30'></img>
               <div className="">
-                <div className="relative flex justify-between">
-                  <h2 className="text-4xl text-center sm:text-start font-semibold">{userData?.username}</h2>
+                <div className="relative flex justify-center gap-2 lg:gap-0 lg:justify-between">
+                  <h2 className="text-xl lg:text-4xl text-center sm:text-start font-semibold">{userData?.username}</h2>
                   {session?.username != userData?.username ? null :
-                    <button onClick={handleTogglePopupEdit}><i className="bx bx-edit text-4xl"></i></button>
+                    <button onClick={handleTogglePopupEdit}><i className="bx bx-edit text-2xl lg:text-4xl"></i></button>
                 }
                 </div>
-                <div className="mt-5 flex">
-                  <div className="flex flex-col items-center w-44 border-r-2 border-slate-400/60">
+                <div className="mt-5 grid grid-cols-3 lg:flex">
+                  <div className="flex flex-col items-center lg:w-44 border-r-2 border-slate-400/60 px-2">
                     <h3 className="text-2xl font-medium">{userData?.upload_count}</h3>
-                    <h4 className="font-light mt-1">ท้องฟ้าที่ส่งประกวด</h4>
+                    <h4 className="font-light text-center mt-1">ท้องฟ้าที่ส่งประกวด</h4>
                   </div>
-                  <div className="flex flex-col items-center w-44 border-r-2 border-slate-400/60">
+                  <div className="flex flex-col items-center lg:w-44 border-r-2 border-slate-400/60 px-2">
                     <h3 className="text-2xl font-medium">{userData?.voted_count}</h3>
-                    <h4 className="font-light mt-1">ได้รับคะแนนโหวต</h4>
+                    <h4 className="font-light text-center mt-1">ได้รับคะแนนโหวต</h4>
                   </div>
-                  <div className="flex flex-col items-center w-44">
+                  <div className="flex flex-col items-center lg:w-44 px-2">
                     <h3 className="text-2xl font-medium">{userData?.voted_sended}</h3>
-                    <h4 className="font-light mt-1">ส่งคะแนนโหวต</h4>
+                    <h4 className="font-light text-center mt-1">ส่งคะแนนโหวต</h4>
                   </div>
                 </div>
               </div>

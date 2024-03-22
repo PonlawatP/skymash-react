@@ -161,8 +161,8 @@ export default function Home() {
   return (
     <>
       <main className="relative h-full w-full grid grid-rows-[auto_1fr] select-none">
-              <div className="flex justify-center mt-10">
-                  <p className="text-xl font-light bg-white/60 px-4 pb-1 pt-2 rounded-lg">เลือกรูปภาพท้องฟ้าที่ถูกใจที่สุด</p>
+              <div className="flex justify-center lg:mt-10">
+                  <p className="hidden lg:block lg:text-xl font-light bg-white/60 px-4 pb-1 pt-2 rounded-lg">เลือกรูปภาพท้องฟ้าที่ถูกใจที่สุด</p>
               </div>
               {sky_data==null || secondsRemaining <= 0 ? <div className="relative w-full h-full flex flex-col justify-center items-center">
                 <i className="bx bx-cloud text-[4rem] animate-bounce"></i>
@@ -178,7 +178,7 @@ export default function Home() {
 
                 <p className="mt-8">หรือรออีก {moment.utc(secondsRemaining*1000).format("mm:ss")} วินาที เพื่อโหวตไหม่ </p>
               </div>:
-              <div className={`flex items-center justify-center gap-40 ${anim_vote.status!=0 ? "pointer-events-none" : ""}`}>
+              <div className={`flex flex-col lg:flex-row items-center justify-center lg:gap-40 ${anim_vote.status!=0 ? "pointer-events-none" : ""}`}>
                   <div className="relative flex justify-center items-center">
                     <SkyCard
                       className={anim_vote.status>=1?"scale-90 opacity-0":""}
@@ -197,6 +197,7 @@ export default function Home() {
                     />
                     {getScoreAnimation(sky_data.sky[0].current_upvoted, anim_vote_res[0])}
                   </div>
+                  <p className="text-black/40 py-8">หรือ</p>
                   <div className="relative flex justify-center items-center">
                     <SkyCard 
                       className={anim_vote.status>=1?"scale-90 opacity-0":""}

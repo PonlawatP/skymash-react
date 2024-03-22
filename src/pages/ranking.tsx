@@ -13,8 +13,8 @@ export default function RankingPage() {
   return (
     <>
         <main className="relative h-full grid grid-rows-[auto_1fr] pb-24">
-            <div className="flex justify-center mt-10">
-                <p className="text-xl bg-white/60 px-4 pb-1 pt-2 rounded-lg">10 อันดับท้องฟ้า ที่มีคนถูกใจมากที่สุด</p>
+            <div className="flex justify-center lg:mt-10">
+                <p className="lg:block lg:text-xl font-light bg-white/60 px-4 pb-1 pt-2 rounded-lg">10 อันดับท้องฟ้า ที่มีคนถูกใจมากที่สุด</p>
             </div>
             <div className="grid justify-center mt-6">
               {skyData.slice(0,1).map((s:any)=><SkyCardBadge 
