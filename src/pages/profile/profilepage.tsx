@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import SkyCardBadge from '../../components/skycardbadge'
-import SkyCard from '../../components/skycard'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios from 'axios'

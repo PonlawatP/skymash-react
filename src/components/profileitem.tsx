@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 
 export default function ProfileItem(props:any) {
-    const {profile_id=1, img="https://cdn-icons-png.freepik.com/512/3135/3135715.png", username="User", sky_total=0, voted_receive=0, voted_send=0} = props
+    const {img="https://cdn-icons-png.freepik.com/512/3135/3135715.png", username="User", sky_total=0, voted_receive=0, voted_send=0} = props
     return <div className="m-4 lg:mt-4 rounded-xl drop-shadow-md flex flex-col sm:flex-row gap-4 lg:gap-10 justify-between sm:items-center max-w-[66em] p-4 px-6 bg-white">
                 <Link to={`/profile/${username}`} className="flex items-center gap-4 lg:gap-10">
                     <img src={img} onError={(e:any)=>{e.target.src="https://cdn-icons-png.freepik.com/512/3135/3135715.png"}} alt={username} width={120} height={120} className='rounded-full w-[70px] h-[70px] lg:w-[120px] lg:h-[120px] aspect-square object-cover border-2 border-white/30'></img>

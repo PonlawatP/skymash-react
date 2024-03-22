@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import SkyCard from '../../../components/skycard'
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import moment, { now } from 'moment';
+import moment from 'moment';
 import Swal from 'sweetalert2';
 import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
@@ -55,7 +55,7 @@ export default function SkyPage() {
           skid: d.skid,
           name: d.title + " #" + d.skid,
           current_point: d.current_upvoted,
-          data: days_temp.map((day:string, dint:number)=>{
+          data: days_temp.map((day:string)=>{
             const s = d.stats.find((f:any)=>f.date == day)
             if(s != null) crp = s.point
             return s ? s.point : crp

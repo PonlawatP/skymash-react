@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast } from "react-toastify";
 
 export default function SkyCard(props:any) {
-    let {type="normal", no_click=false, title="", score=0, tag="morning", img="", img_prof="", profile_id=1, not_img=false, profile_name="User", color_code="#ffffff", pantone = "Pantone", select=false, blur=false, blurSelected=false, id=1, onImgChange=()=>{}, onTitleChange=()=>{}, onTagChange=()=>{}, onHover=()=>{}, onSelect=()=>{}, className} = props
+    let {type="normal", no_click=false, title="", score=0, tag="morning", img="", not_img=false, profile_name="User", color_code="#ffffff", pantone = "Pantone", select=false, blur=false, blurSelected=false, id=1, onImgChange=()=>{}, onTitleChange=()=>{}, onTagChange=()=>{}, onHover=()=>{}, onSelect=()=>{}, className} = props
     
     title = title == 'null' ? "" : title
 
