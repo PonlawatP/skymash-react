@@ -88,9 +88,9 @@ export default function UploadPage() {
 
   return (
     <>
-        <main className="relative h-full grid grid-rows-[auto_1fr]">
-            <div className="flex justify-center mt-10">
-                <p className="text-xl bg-white/60 px-4 pb-1 pt-2 rounded-lg">อัพโหลดท้องฟ้า</p>
+        <main className="relative h-full grid grid-rows-[auto_1fr] mb-20">
+            <div className="flex justify-center lg:mt-10">
+                <p className="lg:text-xl font-light bg-white/60 px-4 pb-1 pt-2 rounded-lg">อัพโหลดท้องฟ้า</p>
             </div>
             <div className="flex flex-col gap-10 justify-center items-center">
                 <SkyCard type="edit" 

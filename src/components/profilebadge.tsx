@@ -11,8 +11,8 @@ export default function ProfileBadge(props:any){
   }
 
   if(!logged_in){
-    return  <Link to={"/auth/login"} className="pr-account hidden sm:flex group gap-3 items-center text-pr-gray-1 text-md font-normal leading-4 hover:underline">
-              <div className="text-right font-light hidden md:block mt-2">
+    return  <Link to={"/auth/login"} className="pr-account flex group gap-3 items-center text-pr-gray-1 text-md font-normal leading-4 hover:underline">
+              <div className="text-right font-light mt-2">
                 <p className=''>เข้าสู่ระบบ</p>
               </div>
             </Link>
@@ -20,8 +20,8 @@ export default function ProfileBadge(props:any){
 
   return <Menu as="div">
     <div>
-      <Menu.Button className="pr-account hidden sm:flex group gap-3 items-center text-pr-gray-1 text-md font-normal leading-4 hover:underline">
-        <div className="text-right font-light hidden md:block mt-2">
+      <Menu.Button className="pr-account flex group gap-3 items-center text-pr-gray-1 text-md font-normal leading-4 hover:underline">
+        <div className="text-right font-light hidden sm:block mt-2">
           <p className=''>{session.username}</p>
         </div>
         <img src={process.env.REACT_APP_API_ENDPOINT+"/profile/"+session.username+"/img"} onError={(e:any)=>{e.target.src="https://cdn-icons-png.freepik.com/512/3135/3135715.png"}} alt='' width={50} height={50} className='rounded-full aspect-square object-cover border-2 border-white/30'></img>
@@ -37,14 +37,78 @@ export default function ProfileBadge(props:any){
       leaveTo="transform opacity-0 scale-95"
     >
       <Menu.Items className="absolute overflow-hidden right-8 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-        
+        <Menu.Item>
+          {() => (
+            <Link
+              to={session?.username==undefined?"/auth/login":"/upload"}
+              reloadDocument={true}
+              className={
+                "profile-badge-li block lg:hidden cursor-pointer text-sm py-2 pl-3 pt-3 w-full text-black/80 hover:bg-blue-300 hover:pl-4"
+              }
+            >
+              อัพโหลดท้องฟ้า
+            </Link>
+          )}
+        </Menu.Item>
+        <Menu.Item>
+          {() => (
+            <Link
+              to={"/"}
+              reloadDocument={true}
+              className={
+                "profile-badge-li block lg:hidden cursor-pointer text-sm py-2 pl-3 w-full text-black/80 hover:bg-blue-300 hover:pl-4"
+              }
+            >
+              โหวตรูปภาพ
+            </Link>
+          )}
+        </Menu.Item>
+        <Menu.Item>
+          {() => (
+            <Link
+              to={"/ranking"}
+              reloadDocument={true}
+              className={
+                "profile-badge-li block lg:hidden cursor-pointer text-sm py-2 pl-3 w-full text-black/80 hover:bg-blue-300 hover:pl-4"
+              }
+            >
+              จัดอันดับ
+            </Link>
+          )}
+        </Menu.Item>
+        {
+          session?.is_admin ? <Menu.Item>
+            {() => (
+              <Link
+              to={"/admin/users"}
+                reloadDocument={true}
+                className={
+                  "profile-badge-li block lg:hidden cursor-pointer text-sm py-2 pl-3 w-full text-black/80 hover:bg-blue-300 hover:pl-4"
+                }
+              >
+                รายการผู้ใช้
+              </Link>
+            )}
+          </Menu.Item> : null
+        }
+        <Menu.Item>
+          {() => (
+            <div
+              className={
+                "profile-badge-li block cursor-pointer text-sm pt-5 pb-1 lg:pt-3 lg:pb-2 w-full text-black/40 text-center"
+              }
+            >
+              {session.username}
+            </div>
+          )}
+        </Menu.Item>
         <Menu.Item>
           {() => (
             <Link
               to={'/profile/'+session.username}
               reloadDocument={true}
               className={
-                "profile-badge-li block cursor-pointer text-sm py-2 pl-3 w-full text-pr-text-menu hover:bg-blue-300 hover:pl-4"
+                "profile-badge-li block cursor-pointer text-sm py-2 pl-3 w-full text-black/80 hover:bg-blue-300 hover:pl-4"
               }
             >
               จัดการบัญชี
@@ -58,7 +122,7 @@ export default function ProfileBadge(props:any){
                 signOut()
               }}
               className={
-                "profile-badge-li block cursor-pointer text-sm py-2 pb-3 pl-3 w-full text-pr-text-menu hover:bg-blue-300 hover:pl-4"
+                "profile-badge-li block cursor-pointer text-sm py-2 pb-3 pl-3 w-full text-black/80 hover:bg-blue-300 hover:pl-4"
               }
             >
               ออกจากระบบ

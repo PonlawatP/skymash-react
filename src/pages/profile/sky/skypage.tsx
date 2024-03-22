@@ -180,7 +180,7 @@ export default function SkyPage() {
 
   return (
     <>
-        <main className="relative h-full flex flex-col gap-16 2xl:flex-row w-10/12 2xl:w-5/6 3xl:w-4/6 mx-auto">
+        <main className="relative h-full flex flex-col lg:gap-16 2xl:flex-row w-10/12 2xl:w-5/6 3xl:w-4/6 mx-auto mb-20">
                 {sky_data != null ? <>
             <div className="flex flex-col gap-10 justify-center items-center">
                   <SkyCard 
@@ -195,9 +195,9 @@ export default function SkyPage() {
                     img={`${process.env.REACT_APP_API_ENDPOINT}/sky/${sky_data.skid}/img`}
                   ></SkyCard>
             </div>
-            <div className="mt-10 2xl:mt-0 w-full h-full flex flex-col justify-center">
+            <div className="2xl:mt-0 w-full h-full flex flex-col justify-center">
               <div className="flex justify-between">
-                <h2 className='text-xl underline'>ประวัติคะแนนท้องฟ้า</h2>
+                <h2 className='hidden lg:block text-xl underline'>ประวัติคะแนนท้องฟ้า</h2>
                 <div className="flex gap-3">
                   {
                     session?.uid == sky_data.uid ? <>
@@ -231,10 +231,10 @@ export default function SkyPage() {
                             })
                           }
                         });
-                      }} className={`mt-2 bg-red-600 border-red-800 text-slate-100 hover:border-2 hover:border-red-700 hover:bg-red-500 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl transition-all duration-75`}>
+                      }} className={`mt-2 bg-red-600 border-red-800 text-slate-100 hover:border-2 hover:border-red-700 hover:bg-red-500 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 lg:text-xl transition-all duration-75`}>
                         <i className="bx bx-trash"></i> ลบ
                       </button>
-                      <button onClick={handleTogglePopupEdit} className={`mt-2 bg-blue-300 border-blue-600 text-slate-800 hover:border-2 hover:border-blue-400 hover:bg-blue-50 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl transition-all duration-75`}>
+                      <button onClick={handleTogglePopupEdit} className={`mt-2 bg-blue-300 border-blue-600 text-slate-800 hover:border-2 hover:border-blue-400 hover:bg-blue-50 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 lg:text-xl transition-all duration-75`}>
                         <i className="bx bx-edit"></i> แก้ไข
                       </button>
                     </> : null
