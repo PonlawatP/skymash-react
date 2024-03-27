@@ -24,6 +24,8 @@ export default function UserListPage(){
         setUserListData(res)
     })
   },[])
+
+  console.log(userListSort)
     return <>
         <main className="relative h-full grid grid-rows-[auto_1fr] pb-24">
             <div className="flex justify-center lg:mt-10">
@@ -46,7 +48,7 @@ export default function UserListPage(){
                       <p>ท้องฟ้าที่ส่งประกวด</p>
                     }
                   </button></div>
-                {userListData.sort((b:any, a:any)=>userListSort == 0 ? a.voted_count-b.voted_count : userListSort == 0 ? a.voted_sended-b.voted_sended : a.upload_count-b.upload_count).map((u:any, uindex:number)=><ProfileItem
+                {userListData.sort((b:any, a:any)=>userListSort == 0 ? a.voted_count-b.voted_count : userListSort == 1 ? a.voted_sended-b.voted_sended : a.upload_count-b.upload_count).map((u:any, uindex:number)=><ProfileItem
                     key={uindex}
                     profile_id={u.uid}
                     img={`${process.env.REACT_APP_API_ENDPOINT}/profile/${u.username}/img`}
