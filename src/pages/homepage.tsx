@@ -46,12 +46,13 @@ export default function Home() {
     .then(
     (res)=>{
       if(res.data.result.win.skid == sky_data.sky[0].skid){
-        s[0] = res.data.result.win.new_score
-        s[1] = res.data.result.lose.new_score
+        s[0] = res.data.result.win
+        s[1] = res.data.result.lose
       } else {
-        s[1] = res.data.result.win.new_score
-        s[0] = res.data.result.lose.new_score
+        s[1] = res.data.result.win
+        s[0] = res.data.result.lose
       }
+      console.log(s)
       setAnimVoteRes(s)
     }
     ).catch((err)=>{
@@ -70,7 +71,7 @@ export default function Home() {
             r[1] = 0
             setAnimVoteRes(r)
 
-            if(s.error){
+            if(s.error || s.remaining_sky <= 1){
               // console.log(s.waiting, s.adjustment)
               let waiting = s.waiting
               setSecondsRemaining(waiting)
@@ -91,11 +92,14 @@ export default function Home() {
     },600)
   }
 
-  function getScoreAnimation(old_score=0, new_score=0){
+  function getScoreAnimation(old_score=0, new_score=0, diff_form="", diff=0, result_form="", result=0){
     return <div className={`absolute text-center transition-all duration-300 pointer-events-none ${anim_vote.status == 0 || anim_vote.status == 3 ? "opacity-0" : ""}`}>
             <h4 className={`transition-all duration-300 font-medium text-xl ${anim_vote.status>=2 ? "" : "translate-y-3"}`}>คะแนนท้องฟ้า</h4>
             <h3 className={`transition-all duration-300 mt-3 text-[2em] font-bold ${anim_vote.status>=2 ? "" : "translate-y-3"}`}>{anim_vote.status >= 2 ? new_score : old_score}</h3>
             <h3 className={`transition-all duration-300 ${anim_vote.status==2 ? "" : "translate-y-3 opacity-0"}`}><i className={`bx ${new_score - old_score > 0 ? "bxs-upvote text-green-700" : "bxs-downvote text-red-700"}`}></i> {new_score - old_score}</h3>
+            
+            <h3 className={`transition-all duration-300 mt-10 ${diff!=0 ? "" : "translate-y-3 opacity-0"}`}>diff: {diff_form} = {diff}</h3>
+            <h3 className={`transition-all duration-300 ${diff!=0 ? "" : "translate-y-3 opacity-0"}`}>result: {result_form} = {result}</h3>
           </div>
   }
 
@@ -124,7 +128,7 @@ export default function Home() {
           setAnimVoteRes(t)
 
           let intervalId:any = 0;
-          if(s.error){
+          if(s.error || s.remaining_sky <= 1){
             // console.log(s.waiting, s.adjustment)
             let waiting = s.waiting
             setSecondsRemaining(waiting)
@@ -195,7 +199,7 @@ export default function Home() {
                       profile_id={sky_data.sky[0].uid}
                       profile_name={sky_data.sky[0].username}
                     />
-                    {getScoreAnimation(sky_data.sky[0].current_upvoted, anim_vote_res[0])}
+                    {getScoreAnimation(sky_data.sky[0].current_upvoted, anim_vote_res[0].new_score, anim_vote_res[0]?.formular?.expectedScore?.diff_form, anim_vote_res[0]?.formular?.expectedScore?.diff, anim_vote_res[0]?.formular?.rating?.form, anim_vote_res[0]?.formular?.rating?.result)}
                   </div>
                   <p className="text-black/40 py-8">หรือ</p>
                   <div className="relative flex justify-center items-center">
@@ -214,7 +218,7 @@ export default function Home() {
                       profile_id={sky_data.sky[1].uid}
                       profile_name={sky_data.sky[1].username}
                     />
-                    {getScoreAnimation(sky_data.sky[1].current_upvoted, anim_vote_res[1])}
+                    {getScoreAnimation(sky_data.sky[1].current_upvoted, anim_vote_res[1].new_score, anim_vote_res[1]?.formular?.expectedScore?.diff_form, anim_vote_res[1]?.formular?.expectedScore?.diff, anim_vote_res[1]?.formular?.rating?.form, anim_vote_res[1]?.formular?.rating?.result)}
                   </div>
               </div>
             }

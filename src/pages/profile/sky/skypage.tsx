@@ -53,7 +53,7 @@ export default function SkyPage() {
         let crp = 0;
         return {
           skid: d.skid,
-          name: d.title + " #" + d.skid,
+          name: (d.title == "null" ? "ไม่มีชื่อ" : d.title) + " #" + d.skid,
           current_point: d.current_upvoted,
           data: days_temp.map((day:string)=>{
             const s = d.stats.find((f:any)=>f.date == day)
@@ -65,27 +65,37 @@ export default function SkyPage() {
     })
   },[])
 
-  console.log(sky_stats_data)
-  {
-      // tooltip: {"enabled":true,"theme":false,"style":{"fontSize":"12px","fontFamily":"'Trim-Regularr', sans-serif"},
-      //           "x":{"show":false}, // set to true to "fix" the bug
-      //           "y":{"formatter":{"_custom":{"type":"function","display":"<span>ƒ</span> formatter(value, _ref)"}}}}
-  }
-  const sr = sky_stats_data.find((f:any)=>f.skid==sky_id) ? [
+  const sr = (sky_stats_data.find((f:any)=>f.skid==sky_id) ? [
     ...sky_stats_data.filter((f:any)=>f.skid!=sky_id).sort((a:any, b:any) => b.current_point - a.current_point).slice(0,7),
     sky_stats_data.find((f:any)=>f.skid==sky_id)
   ] : [
     ...sky_stats_data.filter((f:any)=>f.skid!=sky_id).sort((a:any, b:any) => b.current_point - a.current_point).slice(0,7)
-  ]
+  ]).map((s:any)=>({
+    ...s,
+    data: s.data.map((d:number, dindex:number)=>{
+      return d == 0 ? null : d
+    }),
+  })).map((s:any)=>({
+    ...s,
+    stats_data: s.data.map((d:number, dindex:number)=>{
+      return s.data[dindex-1] == null ? 0 : d-s.data[dindex-1]
+    }),
+  }))
+
   const chartOptions:ApexOptions = {
-    // Define your chart options here
-    chart: {
-      animations:{"enabled":false},
-      dropShadow:{
-        "enabled":true,
-        "opacity":0.2,"top":6,"blur":4
+    tooltip: {
+      x: {
+        show: false
       },
-      fontFamily:"'Trim-Regularr', sans-serif",
+      y: {
+        formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+          const pls = sr[seriesIndex].stats_data[dataPointIndex]
+          return `${value == null ? "ยังไม่สร้าง" : value}${pls > 0 ? " (+"+pls+")" : pls < 0 ? " ("+pls+")" : ""}`
+        }
+      }
+    },
+    chart: {
+      fontFamily:"'IBM Plex Sans Thai', sans-serif",
       foreColor:"#769BA3",
       height:"auto",
       "toolbar":{
@@ -102,22 +112,6 @@ export default function SkyPage() {
         }
       },
       "width":"100%",
-      "zoom":{
-        "enabled":true,
-        "type":"x",
-        "autoScaleYaxis":false,
-        "zoomedArea":{
-          "fill":{
-            "color":"#2e62a1",
-            "opacity":0.4
-          },
-          "stroke":{
-            "color":"#70c3d0",
-            "opacity":0.4,
-            "width":1
-          }
-        }
-      },
       type: 'line',
     },
     markers: {
@@ -149,33 +143,62 @@ export default function SkyPage() {
     setPopStatus({...popStatus, edit:!popStatus.edit})
   }
 
+  const [image, setImage] = useState<any>(null);
   const [title, setTitle] = useState<any>(null);
   const [tag, setTag] = useState<any>(null);
-
+  const [upload, setUpload] = useState(false);
+  
   const imageUpdate = async () => {
+    setUpload(true)
+    let formData = new FormData();
+    formData.append("image", image);
+    formData.append("title", title);
+    formData.append("tag", tag);
 
-    let data = {
-      title,
-      tag
-    }
+    // console.log(formData.get('image'))
+    try {
+      const response = await toast.promise(
+        fetch(process.env.REACT_APP_API_ENDPOINT+"/sky/"+sky_data?.skid, {
+          method: 'PUT',
+          body: formData,
+        }),
+        {
+          pending: 'กำลังอัพเดต',
+          error: 'เกิดข้อผิดพลาด 🤯'
+        },
+        {
+          position: "bottom-right",
+          autoClose: 1500,
+        }
+    );
 
-      axios.put(process.env.REACT_APP_API_ENDPOINT+"/sky/"+sky_data?.skid, data)
-      .then(
-      ()=>{
-        toast.success("👌 อัพเดตสำเร็จ", {
-          position: 'bottom-right',
-          autoClose: 1500
-        })
-        window.location.reload()
-
+      if (response.ok) {
+        toast.success("👌 อัพเดตสำเร็จ", 
+          {
+            position: "bottom-right",
+            autoClose: 1500,
+          })
+        const rs = await response.json()
+        console.log('Image uploaded successfully!');
+        // Reset the form or handle success
+        navigate(`/sky/${rs.result.skid}`)
+      } else {
+        const rs = await response.json()
+        if(rs.err){
+          toast.error(rs.err, 
+          {
+            position: "bottom-right",
+            autoClose: 1500,
+          })
+          setUpload(false)
+          return
+        }
+        console.error('Image upload failed: ', response.statusText);
       }
-      ).catch((err)=>{
-        console.log(err)
-        toast.success("เกิดข้อผิดพลาด 🤯", {
-          position: 'bottom-right',
-          autoClose: 1500
-        })
-      })
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+    setUpload(false)
   };
 
   return (
@@ -187,6 +210,7 @@ export default function SkyPage() {
                     type="normal"
                     no_click={true}
                     title={sky_data.title}
+                    score={sky_data.current_upvoted}
                     profile_id={sky_data.uid}
                     profile_name={sky_data.username}
                     color_code={sky_data.color_code}
@@ -244,7 +268,8 @@ export default function SkyPage() {
               <div className="md:flex mt-4 items-end gap-10">
                 <h2 className='text-4xl font-bold'>{sky_data.title == 'null' ? "ท้องฟ้าไม่มีชื่อ" : sky_data.title}</h2>
                 <p>อัพโหลดวันที่: {moment(sky_data.create_at).format('D/MM/YYYY')}</p>
-                <p>ท้องฟ้าอันดับที่: {sky_data.rank}</p>
+                <p>คะแนน: {sky_data.current_upvoted}{sky_data.yesterday.current_upvoted != sky_data.current_upvoted ? <span className={`pt-1 rounded-md drop-shadow-md text-xs`}><i className={`bx ${sky_data.yesterday.current_upvoted < sky_data.current_upvoted ? "bxs-upvote text-green-700" : sky_data.yesterday.current_upvoted > sky_data.current_upvoted ? "bxs-downvote text-red-700" : ""}`}></i>{sky_data.current_upvoted - sky_data.yesterday.current_upvoted}</span> : null}</p>
+                {sky_data.yesterday.rank != 9999 ? <p>ท้องฟ้าอันดับที่: {sky_data.rank}{sky_data.yesterday.rank != sky_data.rank ? <span className={`pt-1 rounded-md drop-shadow-md text-xs`}><i className={`bx ${sky_data.yesterday.rank > sky_data.rank ? "bxs-upvote text-green-700" : sky_data.yesterday.rank < sky_data.rank ? "bxs-downvote text-red-700" : ""}`}></i>{sky_data.yesterday.rank}</span> : null}</p> : null}
               </div>
               <div className="mt-6 bg-white/80 p-4 rounded-2xl shadow-xl shadow-black/5 h-[50dvh] relative overflow-hidden">
                 <ReactApexChart
@@ -256,7 +281,6 @@ export default function SkyPage() {
               </div>
             </div>
                 </>: null}
-          
         {
           popStatus.init && session?.username == sky_data?.username ? <>
           <section onClick={(e:any)=>{if(e.target.id=="ed_sc"){handleTogglePopupEdit()}}} id="ed_sc" className={`transition-all duration-200 ${popStatus.edit ? "bg-black/20 backdrop-blur-sm" : "opacity-0 invisible"} w-full h-full fixed top-0 left-0 grid items-center justify-center`}>
@@ -274,6 +298,9 @@ export default function SkyPage() {
                     pantone={sky_data.pantone}
                     img={`${process.env.REACT_APP_API_ENDPOINT}/sky/${sky_data.skid}/img`}
 
+                    onImgChange={(e:any)=>{
+                      setImage(e)
+                    }}
                     onTitleChange={(e:any)=>{
                       setTitle(e.target.value)
                     }}
@@ -284,7 +311,7 @@ export default function SkyPage() {
 
                   <button onClick={()=>{
                     imageUpdate()
-                    }} className={`mt-2 bg-green-200 border-green-600 text-slate-800 hover:border-2 hover:border-green-400 hover:bg-green-50 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl transition-all duration-75`}>แก้ไขท้องฟ้า</button>
+                    }} className={`mt-2 ${upload ? "opacity-50 pointer-events-none" : "" } bg-green-200 border-green-600 text-slate-800 hover:border-2 hover:border-green-400 hover:bg-green-50 font-normal pt-2 pb-1 px-3 rounded-md border-b-2 text-xl transition-all duration-75`}>แก้ไขท้องฟ้า</button>
               </div>
           </section>
           </> : null

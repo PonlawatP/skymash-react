@@ -17,13 +17,13 @@ export default function ProfilePage() {
     setUserExistValue(js.username)
     setUserBio(js.bio)
 
-    if(profile_id == undefined){
       if(js && js.uid > 0){
-        navigate("/profile/"+js.username)
+        if(profile_id == undefined){
+          navigate("/profile/"+js.username)
+        }
       } else {
         navigate("/auth/login")
       }
-    }
 
     fetch(process.env.REACT_APP_API_ENDPOINT+`/profile/${profile_id}`, {
       method: 'GET',

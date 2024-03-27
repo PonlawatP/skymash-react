@@ -17,9 +17,11 @@ export default function RankingPage() {
                 <p className="lg:block lg:text-xl font-light bg-white/60 px-4 pb-1 pt-2 rounded-lg">10 อันดับท้องฟ้า ที่มีคนถูกใจมากที่สุด</p>
             </div>
             <div className="grid justify-center mt-6">
-              {skyData.slice(0,1).map((s:any)=><SkyCardBadge 
+              {skyData.slice(0,1).map((s:any, sindex)=><SkyCardBadge 
+                key={sindex}
                 id={s.skid}
                 rank={s.rank}
+                yesterday_rank={s.yesterday.rank}
                 score={s.current_upvoted}
                 title={s.title}
                 tag={s.tag}
@@ -32,9 +34,11 @@ export default function RankingPage() {
             </div>
 
             <div className="flex flex-wrap gap-8 mt-12 max-w-[82em] mx-auto justify-center">
-              {skyData.slice(1).map((s:any)=><SkyCardBadge 
+              {skyData.slice(1).map((s:any, sindex)=><SkyCardBadge 
+                key={sindex}
                 id={s.skid}
                 rank={s.rank}
+                yesterday_rank={s.yesterday.rank}
                 score={s.current_upvoted}
                 title={s.title}
                 tag={s.tag}

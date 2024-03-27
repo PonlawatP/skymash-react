@@ -13,9 +13,10 @@ export default function UserListPage(){
     } else {
       navigate("/auth/login")
     }
-  })
+  }, [])
 
   const [userListData, setUserListData] = useState([])
+  const [userListSort, setUserListSort] = useState(0)
   useEffect(()=>{
     fetch(process.env.REACT_APP_API_ENDPOINT+`/profile`, {
       method: 'GET',
@@ -30,8 +31,22 @@ export default function UserListPage(){
             </div>
             <div className="mx-auto mt-10">
                 <div className="flex justify-end">
-                  <button className="flex items-center gap-2 text-black/50 hover:text-black/80 text-sm"><i className="bx bx-sort-alt-2 text-lg lg:text-3xl"></i> <p>ได้รับคะแนนโหวต</p></button></div>
-                {userListData.map((u:any, uindex:number)=><ProfileItem
+                  <button 
+                    onClick={()=>{
+                      setUserListSort(prev=>prev >= 2 ? 0 : prev+1)
+                    }}
+                    className="flex items-center gap-2 text-black/50 hover:text-black/80 text-sm"
+                  >
+                    <i className="bx bx-sort-alt-2 text-lg lg:text-3xl"></i> 
+                    {userListSort == 0 ?
+                      <p>ได้รับคะแนนโหวต</p>
+                      :userListSort == 1 ?
+                      <p>ส่งคะแนนโหวต</p>
+                      :
+                      <p>ท้องฟ้าที่ส่งประกวด</p>
+                    }
+                  </button></div>
+                {userListData.sort((b:any, a:any)=>userListSort == 0 ? a.voted_count-b.voted_count : userListSort == 0 ? a.voted_sended-b.voted_sended : a.upload_count-b.upload_count).map((u:any, uindex:number)=><ProfileItem
                     key={uindex}
                     profile_id={u.uid}
                     img={`${process.env.REACT_APP_API_ENDPOINT}/profile/${u.username}/img`}

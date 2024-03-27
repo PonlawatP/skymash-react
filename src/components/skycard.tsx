@@ -145,31 +145,21 @@ export default function SkyCard(props:any) {
         :
         type=="edit" ?
             <div className="sky-card bg-white drop-shadow-xl p-4 rounded-sm w-[20rem] lg:w-[26rem]">
-                {not_img ?
-                <>
-                    <div className="sky-img relative aspect-square rounded-sm group bg-slate-200">
-                        <img className="w-full h-full object-cover" src={img==""?"https://www.adorama.com/alc/wp-content/uploads/2017/11/shutterstock_114802408.jpg":img} alt="" />
-                        <div className="w-full h-full absolute top-0 shadow-inner shadow-black/30"></div>
-                    </div>
-                </>:<>
                     <input type="file" name="" id="img_preview" onChange={(e)=>{onImgChange(handleImage(e))}} hidden />
                     <label htmlFor='img_preview'  className="sky-img block cursor-pointer relative aspect-square w-[18rem] lg:w-[24rem] rounded-sm group bg-slate-200 shadow-inner overflow-hidden">
-                        {img != "" ? 
-                            <img src={img} alt="sky's preview" className="absolute w-full h-full object-cover" />
-                        :
                         <>
-                            {imagePreview != null ? <img src={imagePreview} alt="sky's preview" className="absolute w-full h-full object-cover" /> : null}
-                            <div className={`transition-all duration-300 relative w-full h-full p-3 group-hover:bg-black/50 group ${imagePreview != null ? "opacity-0 hover:opacity-100 backdrop-blur-sm" : ""}`}>
+                        {imagePreview != null || img != "" ? 
+                            <img src={imagePreview != null ? imagePreview : img} alt="sky's preview" className="absolute w-full h-full object-cover" />
+                        : null
+                        }
+                            <div className={`transition-all duration-300 relative w-full h-full p-3 ${not_img ? "opacity-0 group-hover:opacity-100" : ""} group-hover:bg-black/50 group ${imagePreview != null ? "opacity-0 hover:opacity-100 backdrop-blur-sm" : ""}`}>
                                 <div className="transition-all duration-300 rounded-md flex flex-col justify-center items-center w-full h-full border-2 border-dashed border-slate-500 text-slate-500 group-hover:border-white group-hover:text-white">
                                     <i className="bx bx-image-add text-[4.5em] mb-4"></i>
                                     <p>คลิกเพื่อเพิ่มรูปภาพ</p>
                                 </div>
                             </div>
                         </>
-                        }
                     </label>
-                </>
-                }
                 <form className="sky-detail pt-4 px-2 grid grid-cols-[1fr_auto] items-start gap-4"
                     onSubmit={(e)=>{
                         e.preventDefault()

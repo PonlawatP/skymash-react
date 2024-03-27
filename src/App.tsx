@@ -13,6 +13,7 @@ import SkyPage from "./pages/profile/sky/skypage";
 import RankingPage from "./pages/ranking";
 import UserListPage from "./pages/admin/userlistpage";
 import ProfilePage from "./pages/profile/profilepage";
+import SettingPage from "./pages/admin/settingpage";
 
 function App() {
   const routers = createBrowserRouter(
@@ -46,6 +47,7 @@ function App() {
         element: <RootLayout />,
         children: [
           {path: "users", element: <UserListPage/>},
+          {path: "setting", element: <SettingPage/>},
         ]
       },
       {
