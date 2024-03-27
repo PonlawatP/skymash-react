@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import ProfileItem from '../../components/profileitem'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios from 'axios'

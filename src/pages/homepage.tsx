@@ -54,42 +54,69 @@ export default function Home() {
       }
       console.log(s)
       setAnimVoteRes(s)
-    }
-    ).catch((err)=>{
-      console.log(err)
-    })
 
-    setTimeout(()=>{
-      setAnimVote({...t, status: 2})
       setTimeout(()=>{
-        setAnimVote({...t, select: 0, status: 3})
-        fetchPair().then((s)=>{
-          setTimeout(()=>{
-            setAnimVote({...t, select: 0, status: 0})
-            let r:any = {}
-            r[0] = 0
-            r[1] = 0
-            setAnimVoteRes(r)
+        setAnimVote({...t, status: 2})
+        setTimeout(()=>{
+          setAnimVote({...t, select: 0, status: 3})
+          fetchPair().then((s)=>{
+            setTimeout(()=>{
+              setAnimVote({...t, select: 0, status: 0})
+              let r:any = {}
+              r[0] = 0
+              r[1] = 0
+              setAnimVoteRes(r)
 
-            if(s.error || s.remaining_sky <= 1){
-              // console.log(s.waiting, s.adjustment)
-              let waiting = s.waiting
-              setSecondsRemaining(waiting)
-              setTimeout(() => {
-                const intervalId = setInterval(() => {
-                  if(waiting < 0){
-                    clearInterval(intervalId)
-                    window.location.reload();
-                  } 
-                  waiting = waiting - 1
-                  setSecondsRemaining(waiting);
-                }, 1000); // Update every second
-              }, s.adjustment*1000); // Update every second
-            }
-          },500)
-        })
-      },1500)
-    },600)
+              if(s.error || s.remaining_sky <= 1){
+                // console.log(s.waiting, s.adjustment)
+                let waiting = s.waiting
+                setSecondsRemaining(waiting)
+                setTimeout(() => {
+                  const intervalId = setInterval(() => {
+                    if(waiting < 0){
+                      clearInterval(intervalId)
+                      window.location.reload();
+                    } 
+                    waiting = waiting - 1
+                    setSecondsRemaining(waiting);
+                  }, 1000); // Update every second
+                }, s.adjustment*1000); // Update every second
+              }
+            },500)
+          })
+        },1500)
+      },600)
+  }
+
+  ).catch((err)=>{
+    console.log(err)
+
+    fetchPair().then((s)=>{
+      setTimeout(()=>{
+        setAnimVote({...t, select: 0, status: 0})
+        let r:any = {}
+        r[0] = 0
+        r[1] = 0
+        setAnimVoteRes(r)
+
+        if(s.error || s.remaining_sky <= 1){
+          // console.log(s.waiting, s.adjustment)
+          let waiting = s.waiting
+          setSecondsRemaining(waiting)
+          setTimeout(() => {
+            const intervalId = setInterval(() => {
+              if(waiting < 0){
+                clearInterval(intervalId)
+                window.location.reload();
+              } 
+              waiting = waiting - 1
+              setSecondsRemaining(waiting);
+            }, 1000); // Update every second
+          }, s.adjustment*1000); // Update every second
+        }
+      },500)
+    })
+  })
   }
 
   function getScoreAnimation(old_score=0, new_score=0, diff_form="", diff=0, result_form="", result=0){

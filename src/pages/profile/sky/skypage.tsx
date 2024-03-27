@@ -6,7 +6,6 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
-import axios from 'axios';
 
 export default function SkyPage() {
   const [sky_data, setSkyData] = useState<any>(null);
@@ -72,7 +71,7 @@ export default function SkyPage() {
     ...sky_stats_data.filter((f:any)=>f.skid!=sky_id).sort((a:any, b:any) => b.current_point - a.current_point).slice(0,7)
   ]).map((s:any)=>({
     ...s,
-    data: s.data.map((d:number, dindex:number)=>{
+    data: s.data.map((d:number)=>{
       return d == 0 ? null : d
     }),
   })).map((s:any)=>({
@@ -88,7 +87,7 @@ export default function SkyPage() {
         show: false
       },
       y: {
-        formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+        formatter: function(value, { seriesIndex, dataPointIndex }) {
           const pls = sr[seriesIndex].stats_data[dataPointIndex]
           return `${value == null ? "ยังไม่สร้าง" : value}${pls > 0 ? " (+"+pls+")" : pls < 0 ? " ("+pls+")" : ""}`
         }
