@@ -119,7 +119,7 @@ export default function Home() {
   })
   }
 
-  function getScoreAnimation(old_score=0, new_score=0, diff_form="", diff=0, result_form="", result=0){
+  function getScoreAnimation(old_score=0, new_score=0, diff_form="", diff=0, result_form="", result=0.0){
     return <div className={`absolute text-center transition-all duration-300 pointer-events-none ${anim_vote.status == 0 || anim_vote.status == 3 ? "opacity-0" : ""}`}>
             <h4 className={`transition-all duration-300 font-medium text-xl ${anim_vote.status>=2 ? "" : "translate-y-3"}`}>คะแนนท้องฟ้า</h4>
             <h3 className={`transition-all duration-300 mt-3 text-[2em] font-bold ${anim_vote.status>=2 ? "" : "translate-y-3"}`}>{anim_vote.status >= 2 ? new_score : old_score}</h3>
@@ -226,7 +226,7 @@ export default function Home() {
                       profile_id={sky_data.sky[0].uid}
                       profile_name={sky_data.sky[0].username}
                     />
-                    {getScoreAnimation(sky_data.sky[0].current_upvoted, anim_vote_res[0].new_score, anim_vote_res[0]?.formular?.expectedScore?.diff_form, anim_vote_res[0]?.formular?.expectedScore?.diff, anim_vote_res[0]?.formular?.rating?.form, anim_vote_res[0]?.formular?.rating?.result)}
+                    {getScoreAnimation(sky_data.sky[0].current_upvoted, anim_vote_res[0].new_score, anim_vote_res[0]?.formular?.expectedScore?.result_form, anim_vote_res[0]?.formular?.expectedScore?.result, anim_vote_res[0]?.formular?.rating?.form, anim_vote_res[0]?.formular?.rating?.result)}
                   </div>
                   <p className="text-black/40 py-8">หรือ</p>
                   <div className="relative flex justify-center items-center">
@@ -245,7 +245,7 @@ export default function Home() {
                       profile_id={sky_data.sky[1].uid}
                       profile_name={sky_data.sky[1].username}
                     />
-                    {getScoreAnimation(sky_data.sky[1].current_upvoted, anim_vote_res[1].new_score, anim_vote_res[1]?.formular?.expectedScore?.diff_form, anim_vote_res[1]?.formular?.expectedScore?.diff, anim_vote_res[1]?.formular?.rating?.form, anim_vote_res[1]?.formular?.rating?.result)}
+                    {getScoreAnimation(sky_data.sky[1].current_upvoted, anim_vote_res[1].new_score, anim_vote_res[1]?.formular?.expectedScore?.result_form, anim_vote_res[1]?.formular?.expectedScore?.result, anim_vote_res[1]?.formular?.rating?.form, anim_vote_res[1]?.formular?.rating?.result)}
                   </div>
               </div>
             }

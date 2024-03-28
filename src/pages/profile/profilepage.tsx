@@ -244,7 +244,7 @@ export default function ProfilePage() {
               color_code={s.color_code}
               img={`${process.env.REACT_APP_API_ENDPOINT}/sky/${s.skid}/img`}
             />)}
-{/*           
+        {/*
           <SkyCard/>
           <SkyCardBadge rank={3}/>
           <SkyCard/>
