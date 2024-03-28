@@ -268,7 +268,7 @@ export default function SkyPage() {
                 <h2 className='text-4xl font-bold'>{sky_data.title == 'null' ? "ท้องฟ้าไม่มีชื่อ" : sky_data.title}</h2>
                 <p>อัพโหลดวันที่: {moment(sky_data.create_at).format('D/MM/YYYY')}</p>
                 <p>คะแนน: {sky_data.current_upvoted}{sky_data.yesterday.current_upvoted != sky_data.current_upvoted ? <span className={`pt-1 rounded-md drop-shadow-md text-xs`}><i className={`bx ${sky_data.yesterday.current_upvoted < sky_data.current_upvoted ? "bxs-upvote text-green-700" : sky_data.yesterday.current_upvoted > sky_data.current_upvoted ? "bxs-downvote text-red-700" : ""}`}></i>{sky_data.current_upvoted - sky_data.yesterday.current_upvoted}</span> : null}</p>
-                {sky_data.yesterday.rank != 9999 ? <p>ท้องฟ้าอันดับที่: {sky_data.rank}{sky_data.yesterday.rank != sky_data.rank ? <span className={`pt-1 rounded-md drop-shadow-md text-xs`}><i className={`bx ${sky_data.yesterday.rank > sky_data.rank ? "bxs-upvote text-green-700" : sky_data.yesterday.rank < sky_data.rank ? "bxs-downvote text-red-700" : ""}`}></i>{sky_data.yesterday.rank}</span> : null}</p> : null}
+                {sky_data.rank != 9999 ? <p>ท้องฟ้าอันดับที่: {sky_data.rank}{sky_data.yesterday.rank != sky_data.rank && sky_data.yesterday.rank != 9999 ? <span className={`pt-1 rounded-md drop-shadow-md text-xs`}><i className={`bx ${sky_data.yesterday.rank > sky_data.rank ? "bxs-upvote text-green-700" : sky_data.yesterday.rank < sky_data.rank ? "bxs-downvote text-red-700" : ""}`}></i>{sky_data.yesterday.rank}</span> : null}</p> : null}
               </div>
               <div className="mt-6 bg-white/80 p-4 rounded-2xl shadow-xl shadow-black/5 h-[50dvh] relative overflow-hidden">
                 <ReactApexChart
