@@ -233,7 +233,7 @@ export default function ProfilePage() {
         <div className="flex flex-wrap gap-8 mt-8 max-w-[82em] mx-auto items-end justify-center mb-20">
           {userSkyData?.all.map((s:any, sindex:number)=><SkyCardBadge 
               key={sindex}
-              id={userSkyData?.popularSky.skid}
+              id={s.skid}
               rank={s.rank}
               score={s.current_upvoted}
               title={s.title}

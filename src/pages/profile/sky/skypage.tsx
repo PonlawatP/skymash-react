@@ -288,14 +288,14 @@ export default function SkyPage() {
 
                   <SkyCard type="edit"
                     not_img={true} 
-                    title={sky_data.title}
-                    score={sky_data.current_upvoted}
-                    profile_id={sky_data.uid}
-                    profile_name={sky_data.username}
-                    color_code={sky_data.color_code}
-                    tag={sky_data.tag}
-                    pantone={sky_data.pantone}
-                    img={`${process.env.REACT_APP_API_ENDPOINT}/sky/${sky_data.skid}/img`}
+                    title={sky_data?.title}
+                    score={sky_data?.current_upvoted}
+                    profile_id={sky_data?.uid}
+                    profile_name={sky_data?.username}
+                    color_code={sky_data?.color_code}
+                    tag={sky_data?.tag}
+                    pantone={sky_data?.pantone}
+                    img={`${process.env.REACT_APP_API_ENDPOINT}/sky/${sky_data?.skid}/img`}
 
                     onImgChange={(e:any)=>{
                       setImage(e)
